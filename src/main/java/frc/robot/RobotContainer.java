@@ -128,10 +128,6 @@ public class RobotContainer {
         joystick.leftTrigger().onTrue(m_coralSubSystem.reverseIntakeCommand().until(() -> CANRange.getIsDetected));
         joystick.leftTrigger().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.KIntake).until(() -> CANRange.getIsDetected));
 
-
-        joystick.leftTrigger().onTrue(m_coralSubSystem.reverseIntakeCommand().until(() -> CANRange.getIsDetected));
-        joystick.leftTrigger().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.KIntake).until(() -> CANRange.getIsDetected));
-
         joystick.leftTrigger().onFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
 //Elevator Button Bindings
 
