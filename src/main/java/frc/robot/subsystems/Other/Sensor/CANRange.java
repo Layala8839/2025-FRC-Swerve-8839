@@ -29,7 +29,7 @@ public class CANRange extends SubsystemBase{
 }
 
 private static StatusSignal<Boolean> getIsDetected() {
-      // TODO Auto-generated method stub
+      // Auto-generated method stub
       SmartDashboard.putBoolean("Detected", getIsDetected);
             return null;}
 }

@@ -132,6 +132,7 @@ public class RobotContainer {
         joystick.leftTrigger().onTrue(m_coralSubSystem.reverseIntakeCommand().until(() -> CANRange.getIsDetected));
         joystick.leftTrigger().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.KIntake).until(() -> CANRange.getIsDetected));
 
+        joystick.leftTrigger().onFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
 //Elevator Button Bindings
 
                 //Joystick "A" Runs elevator and arm to Level 1
