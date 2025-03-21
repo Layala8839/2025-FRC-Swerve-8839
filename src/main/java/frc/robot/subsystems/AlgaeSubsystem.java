@@ -144,7 +144,7 @@ public class AlgaeSubsystem extends SubsystemBase {
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               //IDK if this Actually works
             case kballscore:
-                runIntakeCommand();
+                reverseIntakeCommand();
 
               //Ball Commands
     
@@ -180,7 +180,7 @@ public class AlgaeSubsystem extends SubsystemBase {
    */
   public Command runIntakeCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.5));
+        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(-0.3));
   }
 
   /**
@@ -189,7 +189,7 @@ public class AlgaeSubsystem extends SubsystemBase {
    */
   public Command reverseIntakeCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(-0.5));
+        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.3));
   }
 
   /**
