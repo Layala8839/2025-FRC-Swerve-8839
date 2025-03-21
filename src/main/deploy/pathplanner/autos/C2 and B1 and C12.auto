@@ -1,0 +1,113 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Start to Reef2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Coral_Klevel4"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Coral_Klevel4"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "score"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "KStow"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Reef2 to ball1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Ball_Ground_Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Ball1 to pross"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Ball_Ground_Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Ball_Score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "pross to coral Station"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Coral station to reef8"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

@@ -1,3 +1,6 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -61,7 +64,7 @@ public final class Configs {
           .allowedClosedLoopError(0.5);
 
       // Configure basic settings of the intake motor
-      intakeConfig.inverted(false).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
+      intakeConfig.inverted(true).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
     }
   }
 }

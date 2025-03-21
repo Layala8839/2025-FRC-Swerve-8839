@@ -13,9 +13,9 @@ import frc.robot.constants;
 /** Control REV Robotics Blinkin LED controller */
 public class BlinkinLEDController {
   public enum BlinkinPattern {
-    /*
-     * Fixed Palette Pattern
-     */
+
+    /*Fixed Palette Pattern*/
+    
     RAINBOW_RAINBOW_PALETTE(-0.99),
     RAINBOW_PARTY_PALETTE(-0.97),
     RAINBOW_OCEAN_PALETTE(-0.95),

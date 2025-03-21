@@ -1,3 +1,7 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Second;
@@ -7,6 +11,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -16,6 +21,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
@@ -24,9 +30,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.LimelightHelpers;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -38,6 +46,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
 
+    LimelightHelpers.PoseEstimate limelightMeasurement;
+
+    private final Pigeon2 pigeon = new Pigeon2(13,"Drive Base");
     /** Swerve request to apply during path following */
     //private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
@@ -196,8 +207,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
-        configureAutoBuilder();
 
+        setVisionMeasurementStdDevs(VecBuilder.fill(5,.5,9999999));
+
+        configureAutoBuilder();
     }
 
     private void configureAutoBuilder() {
@@ -279,6 +292,24 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 );
                 m_hasAppliedOperatorPerspective = true;
             });
+            //
+        LimelightHelpers.SetRobotOrientation("limelight", pigeon.getYaw().getValueAsDouble(), 0, 0, 0, 0, 0); 
+
+        limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+
+        try {
+            if (limelightMeasurement != null && limelightMeasurement.pose != null) {
+                if (limelightMeasurement.pose.getX() != 0) {
+                    addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds);
+                    SmartDashboard.putBoolean("LimeLight", true);
+                } else{
+                    SmartDashboard.putBoolean("LimeLight", false);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
         }
     }
 

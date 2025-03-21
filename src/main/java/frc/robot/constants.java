@@ -48,6 +48,7 @@ public final class constants {
       public static final double kballLevel1 = -15;
       public static final double kballLevel2 = -15;
       public static final double kballbarge = -17;
+      public static final double kballStow = -15;
     }
 
     public static final class IntakeSetpoints {
@@ -67,5 +68,6 @@ public final class constants {
     
   }
 
-  public static final int BLINKIN_LED_CONTROLLER_PORT = 0;
+  public static final int BLINKIN_LED_CONTROLLER_PORT = 9;
+
 }
