@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CANRange extends SubsystemBase{
       public static final Boolean getIsDetected = getIsDetected().getValue();
-            private final static CANrange canrange = new CANrange(1);
+      private final static CANrange canrange = new CANrange(14);
       
     public void Robot() {
     /* Configure CANcoder */

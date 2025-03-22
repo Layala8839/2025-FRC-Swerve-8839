@@ -15,30 +15,30 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
 
   public UsbCamera usbCamera1;
-  public UsbCamera usbCamera2;
+  //public UsbCamera usbCamera2;
 
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
 
-  private final boolean kUseLimelight = true;
+  private final boolean kUseLimelight = false;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
     // Instantiate our RobotContainer.  This will perform all our button bindings
-    //USB camera 1
+    // USB camera 1
     try {
-      usbCamera1 = CameraServer.startAutomaticCapture(0);
+      usbCamera1 = CameraServer.startAutomaticCapture(1);
         } catch (Exception e) {
           SmartDashboard.putString("camera 0 capture failed","failed");
         }
     //Usb camera 2
-        try {
-      usbCamera2 = CameraServer.startAutomaticCapture(1);
-        } catch (Exception e) {
-          SmartDashboard.putString("camera 1 capture failed","failed");
-        }
-      }
+    //    try {
+    //  usbCamera2 = CameraServer.startAutomaticCapture(2);
+    //    } catch (Exception e) {
+    //      SmartDashboard.putString("camera 1 capture failed","failed");
+    //    }
+     }
 
 
   @Override
