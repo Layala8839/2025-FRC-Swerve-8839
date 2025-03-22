@@ -94,17 +94,23 @@ public class RobotContainer {
 
         //Algae
         
-        NamedCommands.registerCommand("Ball_Level_1", m_algaeSubSystem.setSetpointCommand(Setpoint2.kballLevel1));
+        NamedCommands.registerCommand("Ball_Level_1", 
+        m_algaeSubSystem.setSetpointCommand(Setpoint2.kballLevel1));
 
-        NamedCommands.registerCommand("Ball_Level_2", m_algaeSubSystem.setSetpointCommand(Setpoint2.kballLevel2));
+        NamedCommands.registerCommand("Ball_Level_2", 
+        m_algaeSubSystem.setSetpointCommand(Setpoint2.kballLevel2));
 
-        NamedCommands.registerCommand("Ball_Barge", m_algaeSubSystem.setSetpointCommand(Setpoint2.kballbarge));
+        NamedCommands.registerCommand("Ball_Barge", 
+        m_algaeSubSystem.setSetpointCommand(Setpoint2.kballbarge));
 
-        NamedCommands.registerCommand("Ball_Score", m_algaeSubSystem.setSetpointCommand(Setpoint2.kballscore));
+        NamedCommands.registerCommand("Ball_Score", 
+        m_algaeSubSystem.setSetpointCommand(Setpoint2.kballscore));
 
-        NamedCommands.registerCommand("Ball_Ground_Intake", m_algaeSubSystem.setSetpointCommand(Setpoint2.Kballgroundintake));
+        NamedCommands.registerCommand("Ball_Ground_Intake", 
+        m_algaeSubSystem.setSetpointCommand(Setpoint2.Kballgroundintake));
 
-        NamedCommands.registerCommand("Ball_Intake", m_algaeSubSystem.setSetpointCommand(Setpoint2.Kballintake));
+        NamedCommands.registerCommand("Ball_Intake", 
+        m_algaeSubSystem.setSetpointCommand(Setpoint2.Kballintake));
         //Do all after initialization
 
         configureBindings();
