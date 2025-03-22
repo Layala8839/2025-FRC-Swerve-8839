@@ -20,11 +20,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.AlgaeSubsystem;
-import frc.robot.subsystems.AlgaeSubsystem.Setpoint2;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.CoralSubsystem;
-import frc.robot.subsystems.CoralSubsystem.Setpoint;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.Setpoint;
+import frc.robot.subsystems.Superstructure.Setpoint2;
 import frc.robot.subsystems.Other.Sensor.CANRange;
 
 public class RobotContainer {
@@ -45,8 +44,8 @@ public class RobotContainer {
     private final CommandXboxController joystick2 = new CommandXboxController(1);
 
     //Subsystem commands {setpoints}
-    private final CoralSubsystem m_coralSubSystem = new CoralSubsystem();
-    private final AlgaeSubsystem m_algaeSubSystem = new AlgaeSubsystem();
+    private final Superstructure m_coralSubSystem = new Superstructure();
+    //private final AlgaeSubsystem m_coralSubSystem = new AlgaeSubsystem();
 
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -62,8 +61,8 @@ public class RobotContainer {
                                 {System.out.println("No Auto Selected");}}));
 
         //subsystem initialization
-       CoralSubsystem m_coralSubSystem = new CoralSubsystem();
-       AlgaeSubsystem m_algaeSubSystem = new AlgaeSubsystem();
+       Superstructure m_coralSubSystem = new Superstructure();
+       //AlgaeSubsystem m_coralSubSystem = new AlgaeSubsystem();
         //Register Named Commands
         //Coral
         NamedCommands.registerCommand("Coral_Klevel1", 
@@ -95,22 +94,22 @@ public class RobotContainer {
         //Algae
         
         NamedCommands.registerCommand("Ball_Level_1", 
-        m_algaeSubSystem.setSetpointCommand(Setpoint2.kballLevel1));
+        m_coralSubSystem.setSetpointCommand(Setpoint2.kballLevel1));
 
         NamedCommands.registerCommand("Ball_Level_2", 
-        m_algaeSubSystem.setSetpointCommand(Setpoint2.kballLevel2));
+        m_coralSubSystem.setSetpointCommand(Setpoint2.kballLevel2));
 
         NamedCommands.registerCommand("Ball_Barge", 
-        m_algaeSubSystem.setSetpointCommand(Setpoint2.kballbarge));
+        m_coralSubSystem.setSetpointCommand(Setpoint2.kballbarge));
 
         NamedCommands.registerCommand("Ball_Score", 
-        m_algaeSubSystem.setSetpointCommand(Setpoint2.kballscore));
+        m_coralSubSystem.setSetpointCommand(Setpoint2.kballscore));
 
         NamedCommands.registerCommand("Ball_Ground_Intake", 
-        m_algaeSubSystem.setSetpointCommand(Setpoint2.Kballgroundintake));
+        m_coralSubSystem.setSetpointCommand(Setpoint2.Kballgroundintake));
 
         NamedCommands.registerCommand("Ball_Intake", 
-        m_algaeSubSystem.setSetpointCommand(Setpoint2.Kballintake));
+        m_coralSubSystem.setSetpointCommand(Setpoint2.Kballintake));
         //Do all after initialization
 
         configureBindings();
@@ -217,8 +216,8 @@ public class RobotContainer {
 /********************************************Algea ball intake***************************************************************/
 
                 //Joystock Right Bumer on controller 2 moves arm to Ball Ground Intake
-        joystick2.rightBumper().whileTrue(m_algaeSubSystem.setSetpointCommand(Setpoint2.Kballgroundintake))
-                .whileFalse(m_algaeSubSystem.setSetpointCommand(Setpoint2.kStow));
+        joystick2.rightBumper().whileTrue(m_coralSubSystem.setSetpointCommand(Setpoint2.Kballgroundintake))
+                .whileFalse(m_coralSubSystem.setSetpointCommand(Setpoint2.kStow));
 
 /********************************************Ball Reef pick up****************************************************************/
     }

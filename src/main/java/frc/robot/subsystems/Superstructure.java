@@ -23,7 +23,7 @@ import frc.robot.constants.SubsystemConstants.IntakeSetpoints;
 import frc.robot.subsystems.Other.Sensor.CANRange;
 
 
-public class CoralSubsystem extends SubsystemBase {
+public class Superstructure extends SubsystemBase {
   /** CoralSubsystem setpoints */
   public enum Setpoint {
     kStow,
@@ -33,6 +33,16 @@ public class CoralSubsystem extends SubsystemBase {
     kLevel4, 
     KIntake, 
     Kscore,
+  }
+
+  public enum Setpoint2 {
+    Kballintake, 
+    Kballgroundintake, 
+    kballLevel1,
+    kballLevel2, 
+    kballbarge, 
+    kballscore, 
+    kStow,
   }
 
   // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to
@@ -61,7 +71,7 @@ public class CoralSubsystem extends SubsystemBase {
   private double armCurrentTarget = ArmSetpoints.kStowPosition;
   private double elevatorCurrentTarget = ElevatorSetpoints.kResting;
 
-  public CoralSubsystem() {
+  public Superstructure() {
     /*
      * Apply the appropriate configurations to the SPARKs.
      *
@@ -175,6 +185,45 @@ public class CoralSubsystem extends SubsystemBase {
         });
   }
 
+  public Command setSetpointCommand(Setpoint2 Setpoint) {
+    return this.runOnce(
+        () -> {
+          switch (Setpoint) {
+            //Resting Position
+            case kStow:
+              armCurrentTarget = ArmSetpoints.kStowPosition;
+              elevatorCurrentTarget = ElevatorSetpoints.kResting;
+              //IDK if this Actually works
+            case kballscore:
+                reverseIntakeCommand();
+
+              //Ball Commands
+    
+            case Kballgroundintake:
+              armCurrentTarget = ArmSetpoints.kballgroundintake;
+              elevatorCurrentTarget = ElevatorSetpoints.kResting;
+              runIntakeCommand();
+              break;
+
+            case kballLevel1:
+              armCurrentTarget = ArmSetpoints.kballLevel1;
+              elevatorCurrentTarget = ElevatorSetpoints.kballLevel1;
+              break;
+
+            case kballLevel2:
+              armCurrentTarget = ArmSetpoints.kballLevel2;
+              elevatorCurrentTarget = ElevatorSetpoints.kballLevel2;
+              break;
+            case kballbarge:
+             armCurrentTarget = ArmSetpoints.kballbarge;
+             elevatorCurrentTarget = ElevatorSetpoints.kballLevelbarge;
+            break;
+            
+            default:
+                break;
+          }
+        });
+      }
   /**
    * Command to run the intake motor. When the command is interrupted, When the CANRange detects game peice,
    * the motor will stop.
