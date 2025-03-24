@@ -20,29 +20,27 @@ import frc.robot.Configs;
 import frc.robot.constants.SubsystemConstants.ArmSetpoints;
 import frc.robot.constants.SubsystemConstants.ElevatorSetpoints;
 import frc.robot.constants.SubsystemConstants.IntakeSetpoints;
-import frc.robot.subsystems.Other.Sensor.CANRange;
 
 
-public class Superstructure extends SubsystemBase {
-  /** CoralSubsystem setpoints */
+public class SuperStructure extends SubsystemBase {
+  
+  /** CoralSubsystem setpoints **/
   public enum Setpoint {
-    kStow,
-    kLevel1,
-    kLevel2,
-    kLevel3,
-    kLevel4, 
-    KIntake, 
-    Kscore,
-  }
-
-  public enum Setpoint2 {
-    Kballintake, 
-    Kballgroundintake, 
-    kballLevel1,
-    kballLevel2, 
-    kballbarge, 
-    kballscore, 
-    kStow,
+    kStow, // Resting Position for Arm
+    kLevel1, //Level 1 setpoint for elevator
+    kLevel2, //Level 2 setpoint for elevator
+    kLevel3, //Level 3 setpoint for elevator
+    kLevel4, //Level 4 setpoint for elevator
+    KIntake, //Arm intake position
+    Kscore,  //Arm Score position
+    Kalgaeintake, //Algae intake position
+    Kalgaegroundintake, //Algae arm ground intake
+    kalgaeLevel1,
+    kalgaeLevel2, 
+    kalgaebarge, 
+    kalgaescore, 
+    test, 
+    testing,
   }
 
   // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to
@@ -71,7 +69,7 @@ public class Superstructure extends SubsystemBase {
   private double armCurrentTarget = ArmSetpoints.kStowPosition;
   private double elevatorCurrentTarget = ElevatorSetpoints.kResting;
 
-  public Superstructure() {
+  public SuperStructure() {
     /*
      * Apply the appropriate configurations to the SPARKs.
      *
@@ -153,84 +151,83 @@ public class Superstructure extends SubsystemBase {
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
+
             case kLevel1:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
               break;
+
             case kLevel2:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel2;
               break;
+
             case kLevel3:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
               break;
+
             case kLevel4:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
               break;
+
               //Intake from the feeder station
             case KIntake:
               armCurrentTarget = ArmSetpoints.KFeederIntake;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
-              //Soring**
+              //Soring*
+
             case Kscore:
               armCurrentTarget = ArmSetpoints.Kscore;
               break;
+              //IDK
 
-            default:
-              break;
-          }
-        });
-  }
-
-  public Command setSetpointCommand(Setpoint2 Setpoint) {
-    return this.runOnce(
-        () -> {
-          switch (Setpoint) {
-            //Resting Position
-            case kStow:
-              armCurrentTarget = ArmSetpoints.kStowPosition;
-              elevatorCurrentTarget = ElevatorSetpoints.kResting;
-              //IDK if this Actually works
-            case kballscore:
+            case kalgaescore:
                 reverseIntakeCommand();
+              break;
 
               //Ball Commands
-    
-            case Kballgroundintake:
+            case Kalgaegroundintake:
               armCurrentTarget = ArmSetpoints.kballgroundintake;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               runIntakeCommand();
               break;
 
-            case kballLevel1:
-              armCurrentTarget = ArmSetpoints.kballLevel1;
+            case kalgaeLevel1:
+              armCurrentTarget = ArmSetpoints.kballreef;
               elevatorCurrentTarget = ElevatorSetpoints.kballLevel1;
               break;
 
-            case kballLevel2:
-              armCurrentTarget = ArmSetpoints.kballLevel2;
+            case kalgaeLevel2:
+              armCurrentTarget = ArmSetpoints.kballreef;
               elevatorCurrentTarget = ElevatorSetpoints.kballLevel2;
               break;
-            case kballbarge:
+
+            case kalgaebarge:
              armCurrentTarget = ArmSetpoints.kballbarge;
              elevatorCurrentTarget = ElevatorSetpoints.kballLevelbarge;
             break;
-            
+
+            case testing:
+              armCurrentTarget = ArmSetpoints.kLevel3;
+              elevatorCurrentTarget = ElevatorSetpoints.kballLevel2;
+              break;
+
             default:
-                break;
+              break;
           }
-        });
-      }
+        }
+      );
+  }
   /**
    * Command to run the intake motor. When the command is interrupted, When the CANRange detects game peice,
    * the motor will stop.
    */
   public Command runIntakeCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(-0.3)).until(() -> CANRange.getIsDetected);
+        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(-0.3));
   }
 
   /**
@@ -239,7 +236,7 @@ public class Superstructure extends SubsystemBase {
    */
   public Command reverseIntakeCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.3)).until(() -> CANRange.getIsDetected);
+        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.3));
   }
 
   @Override

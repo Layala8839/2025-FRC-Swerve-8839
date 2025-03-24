@@ -18,6 +18,7 @@ public final class constants {
     public static final int kElevatorMotorCanId = 21;
     public static final int kArmMotorCanId = 16;
     public static final int kIntakeMotorCanId = 19;
+    public static final int KCANRangeCanId = 14;
     
 //Done do more then -58
     public static final class ElevatorSetpoints {
@@ -45,8 +46,7 @@ public final class constants {
       public static final double kLevel4 = -7;
       //Needs to be determined!!!
       public static final double kballgroundintake = -15;
-      public static final double kballLevel1 = -15;
-      public static final double kballLevel2 = -15;
+      public static final double kballreef = -15;
       public static final double kballbarge = -15;
       public static final double kballStow = -15;
     }
@@ -64,7 +64,7 @@ public final class constants {
 
   public static final class LEDConfig {
     public static final int LED_Port = 9;
-    public static final int LED_Length = 67;  
+    public static final int LED_Length = 32;  
     
   }
 

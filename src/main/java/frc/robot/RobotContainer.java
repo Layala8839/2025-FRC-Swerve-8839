@@ -10,20 +10,19 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+//import com.pathplanner.lib.auto.AutoBuilder;
+//import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj2.command.Command;
+//import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.Setpoint;
-import frc.robot.subsystems.Superstructure.Setpoint2;
+import frc.robot.subsystems.SuperStructure;
+import frc.robot.subsystems.SuperStructure.Setpoint;
 import frc.robot.subsystems.Other.Sensor.CANRange;
 
 public class RobotContainer {
@@ -44,74 +43,75 @@ public class RobotContainer {
     private final CommandXboxController joystick2 = new CommandXboxController(1);
 
     //Subsystem commands {setpoints}
-    private final Superstructure m_coralSubSystem = new Superstructure();
-    //private final AlgaeSubsystem m_coralSubSystem = new AlgaeSubsystem();
+    private final SuperStructure m_superstructure = new SuperStructure();
+    //private final AlgaeSubsystem m_superstructure = new AlgaeSubsystem();
 
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     /* Path follower */
-    private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+   ////////// private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
-    public RobotContainer() {
+    public RobotContainer() {/* 
         SmartDashboard.putData("Run Selected Auto", new InstantCommand(() -> {
                 Command autoCommand = autoChooser.getSelected();
                 if (autoCommand != null) { autoCommand.schedule(); 
                         } else 
-                                {System.out.println("No Auto Selected");}}));
+                                {System.out.println("No Auto Selected");}}));*/
 
         //subsystem initialization
-       Superstructure m_coralSubSystem = new Superstructure();
-       //AlgaeSubsystem m_coralSubSystem = new AlgaeSubsystem();
+       /*SuperStructure m_superstructure = new SuperStructure();*/
+       //AlgaeSubsystem m_superstructure = new AlgaeSubsystem();
         //Register Named Commands
         //Coral
+        /*
         NamedCommands.registerCommand("Coral_Klevel1", 
-                m_coralSubSystem.setSetpointCommand(Setpoint.kLevel1));
+                m_superstructure.setSetpointCommand(Setpoint.kLevel1));
 
         NamedCommands.registerCommand("Coral_Klevel2", 
-                m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2));
+                m_superstructure.setSetpointCommand(Setpoint.kLevel2));
 
         NamedCommands.registerCommand("Coral_Klevel3", 
-                m_coralSubSystem.setSetpointCommand(Setpoint.kLevel3));
+                m_superstructure.setSetpointCommand(Setpoint.kLevel3));
 
         NamedCommands.registerCommand("Coral_Klevel4", 
-                m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4));
+                m_superstructure.setSetpointCommand(Setpoint.kLevel4));
 
         NamedCommands.registerCommand("Intake_Coral_Feeder", 
-                m_coralSubSystem.setSetpointCommand(Setpoint.KIntake));
+                m_superstructure.setSetpointCommand(Setpoint.KIntake));
 
         NamedCommands.registerCommand("Coral_Score", 
-                m_coralSubSystem.setSetpointCommand(Setpoint.Kscore));
+                m_superstructure.setSetpointCommand(Setpoint.Kscore));
 
         NamedCommands.registerCommand("KStow", 
-                m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+                m_superstructure.setSetpointCommand(Setpoint.kStow));
 
         NamedCommands.registerCommand("Intake", 
-                m_coralSubSystem.runIntakeCommand().until(() -> 
-                CANRange.getIsDetected));
+                m_superstructure.runIntakeCommand().until(() -> 
+                CANRange.getIsDetected));*/
 
 
         //Algae
-        
+        /* 
         NamedCommands.registerCommand("Ball_Level_1", 
-        m_coralSubSystem.setSetpointCommand(Setpoint2.kballLevel1));
+        m_superstructure.setSetpointCommand(Setpoint.kalgaeLevel1));
 
         NamedCommands.registerCommand("Ball_Level_2", 
-        m_coralSubSystem.setSetpointCommand(Setpoint2.kballLevel2));
+        m_superstructure.setSetpointCommand(Setpoint.kballLevel2));
 
         NamedCommands.registerCommand("Ball_Barge", 
-        m_coralSubSystem.setSetpointCommand(Setpoint2.kballbarge));
+        m_superstructure.setSetpointCommand(Setpoint.kballbarge));
 
         NamedCommands.registerCommand("Ball_Score", 
-        m_coralSubSystem.setSetpointCommand(Setpoint2.kballscore));
+        m_superstructure.setSetpointCommand(Setpoint.kballscore));
 
         NamedCommands.registerCommand("Ball_Ground_Intake", 
-        m_coralSubSystem.setSetpointCommand(Setpoint2.Kballgroundintake));
+        m_superstructure.setSetpointCommand(Setpoint.Kballgroundintake));
 
         NamedCommands.registerCommand("Ball_Intake", 
-        m_coralSubSystem.setSetpointCommand(Setpoint2.Kballintake));
+        m_superstructure.setSetpointCommand(Setpoint.Kballintake));
         //Do all after initialization
-
+        */
         configureBindings();
     }
 
@@ -148,83 +148,73 @@ public class RobotContainer {
 /******************************************Coral Intake***********************************************************************/
 
         //Joystick Left Trigger Runs Intake Method
-        /*      joystick.leftTrigger().whileTrue(m_coralSubSystem.reverseIntakeCommand().until(() -> CANRange.getIsDetected))
-                .whileFalse(m_coralSubSystem.runIntakeCommand());//.whileTruerunIntakeCommand
-                joystick.leftTrigger().whileTrue(m_coralSubSystem.setSetpointCommand(Setpoint.KIntake))
-                .whileFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));              
+        /*      joystick.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand().until(() -> CANRange.getIsDetected))
+                .whileFalse(m_superstructure.runIntakeCommand());//.whileTruerunIntakeCommand
+                joystick.leftTrigger().whileTrue(m_superstructure.setSetpointCommand(Setpoint.KIntake))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));              
         */
 
         /*I think this would worth for detecting the coral*/
-        joystick.leftTrigger().onTrue(m_coralSubSystem.reverseIntakeCommand().until(() -> CANRange.getIsDetected));
-        joystick.leftTrigger().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.KIntake).until(() -> CANRange.getIsDetected));
+        joystick2.a().onTrue(m_superstructure.reverseIntakeCommand().until(() -> CANRange.getIsDetected));
+        joystick2.a().onTrue(m_superstructure.setSetpointCommand(Setpoint.KIntake));
 
-        joystick.leftTrigger().onFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+        joystick2.a().onFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
 
 /*****************************************Elevator Button Bindings (Whole Pressed)******************************************/
 
                 //Joystick "A" Runs elevator and arm to Level 1
-        joystick.a().whileTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel1))
-                .whileFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+        joystick.a().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel1))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
                 //Joystick "B" Runs elevator and arm to Level 2
-        joystick.b().whileTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2))
-                .whileFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+        joystick.b().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel2))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
 
                 //Joystick "X" Runs elevator and arm to Level 3
-        joystick.x().whileTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel3))
-                .whileFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+        joystick.x().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel3))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
 
                 //Joystick "Y" Runs elevator and arm to Level 4
-        joystick.y().whileTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4))
-                .whileFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));  
+        joystick.y().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel4))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));  
 
 /*****************************************Elevator Button Bindings (Toggle)************************************************/
 /* <-Remove me to enable
 
                 //Joystick "A" Runs elevator and arm to Level 1
-        joystick.a().toggleOnFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel1))
-                .toggleOnTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+        joystick.a().toggleOnFalse(m_superstructure.setSetpointCommand(Setpoint.kLevel1))
+                .toggleOnTrue(m_superstructure.setSetpointCommand(Setpoint.kStow));
                 //Joystick "B" Runs elevator and arm to Level 2
-        joystick.b().toggleOnFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2))
-                .toggleOnTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+        joystick.b().toggleOnFalse(m_superstructure.setSetpointCommand(Setpoint.kLevel2))
+                .toggleOnTrue(m_superstructure.setSetpointCommand(Setpoint.kStow));
 
                 //Joystick "X" Runs elevator and arm to Level 3
-        joystick.x().toggleOnFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel3))
-                .toggleOnTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+        joystick.x().toggleOnFalse(m_superstructure.setSetpointCommand(Setpoint.kLevel3))
+                .toggleOnTrue(m_superstructure.setSetpointCommand(Setpoint.kStow));
 
                 //Joystick "Y" Runs elevator and arm to Level 4
-        joystick.y().toggleOnFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4))
-                .toggleOnTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
+        joystick.y().toggleOnFalse(m_superstructure.setSetpointCommand(Setpoint.kLevel4))
+                .toggleOnTrue(m_superstructure.setSetpointCommand(Setpoint.kStow));
 */// <-Remove me to enable      
 /*********************************************Score System******************************************************************/
 
                 //Joystick "RightTrigger" Runs Intake Command
-        joystick2.rightTrigger().whileTrue(m_coralSubSystem.reverseIntakeCommand())
-                .whileFalse(m_coralSubSystem.runIntakeCommand());
-        joystick2.rightTrigger().whileTrue(m_coralSubSystem.setSetpointCommand(Setpoint.Kscore))
-                .whileFalse(m_coralSubSystem.setSetpointCommand(Setpoint.kStow));
-
-
-        
-
-
-
-
-
-
-
+        joystick2.rightTrigger().whileTrue(m_superstructure.reverseIntakeCommand())
+                .whileFalse(m_superstructure.runIntakeCommand());
+        joystick2.rightTrigger().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Kscore))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
+//
 
 /********************************************Algea ball intake***************************************************************/
 
                 //Joystock Right Bumer on controller 2 moves arm to Ball Ground Intake
-        joystick2.rightBumper().whileTrue(m_coralSubSystem.setSetpointCommand(Setpoint2.Kballgroundintake))
-                .whileFalse(m_coralSubSystem.setSetpointCommand(Setpoint2.kStow));
-
+      /*  joystick2.rightBumper().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Kballgroundintake))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
+*/
 /********************************************Ball Reef pick up****************************************************************/
     }
 
 
-        public Command getAutonomousCommand() {
+        //public Command getAutonomousCommand() {
                 /* Run the path selected from the auto chooser */
-                return autoChooser.getSelected();
-        }
+                ////////return autoChooser.getSelected();}
     }
