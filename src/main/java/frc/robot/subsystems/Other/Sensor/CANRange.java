@@ -18,25 +18,20 @@ public class CANRange extends SubsystemBase{
       private final static CANrange canrange = new CANrange(SubsystemConstants.KCANRangeCanId);
       
     public void Robot() {
-    /* Configure CANcoder */
+    /* Configure CANRange */
     var toApply = new CANrangeConfiguration();
     System.out.println("Configuration: " + toApply);
-
+    
     /* User can change the configs if they want, or leave it empty for factory-default */
     canrange.getConfigurator().apply(toApply);
 
     /* Set the signal update rate */
     BaseStatusSignal.setUpdateFrequencyForAll(50, canrange.getIsDetected());
-
-
      boolean detected = canrange.getIsDetected().getValue();
       SmartDashboard.putBoolean("Detected", detected);
 }
-
-private static StatusSignal<Boolean> getIsDetected() {
+private static StatusSignal <Boolean> getIsDetected() {
       // Auto-generated method stub
       SmartDashboard.putBoolean("Detected", getIsDetected);
             return null;}
-
-//private static status signal<boolean> isnotDetected
 }

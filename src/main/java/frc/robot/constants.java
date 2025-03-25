@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+/*
+  The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
@@ -18,7 +18,6 @@ public final class constants {
     public static final int kElevatorMotorCanId = 21;
     public static final int kArmMotorCanId = 16;
     public static final int kIntakeMotorCanId = 19;
-    public static final int KCANRangeCanId = 14;
     
 //Done do more then -58
     public static final class ElevatorSetpoints {
@@ -27,11 +26,11 @@ public final class constants {
       public static final int kLevel1 = -2;
       public static final int kLevel2 = -10;
       public static final int kLevel3 = -28;
-      public static final int kLevel4 = -57;
+      public static final int kLevel4 = -57; // Max hight is 58 // 57 is ideal hight for level 4
       //Needs to be determined
-      public static final int kballgroundintake= 0;
-      public static final int kballLevel1 = -18;
-      public static final int kballLevel2 = -32;
+      public static final int kballgroundintake= -10;
+      public static final int kballLevel1 = -34;
+      public static final int kballLevel2 = -40;
       public static final int kballLevelbarge = -58; // MAX HIGHT
 
     }
@@ -45,15 +44,16 @@ public final class constants {
       public static final double kLevel3 = -3;
       public static final double kLevel4 = -7;
       //Needs to be determined!!!
-      public static final double kballgroundintake = -15;
-      public static final double kballreef = -15;
+      public static final double kballgroundintake = -17.5;
+      public static final double kballLevel1 = -15;
+      public static final double kballLevel2 = -15;
       public static final double kballbarge = -15;
-      public static final double kballStow = -15;
+      public static final double Kballtravel = -13;
     }
 
     public static final class IntakeSetpoints {
-      public static final double kForward = 0.5;
-      public static final double kReverse = -0.5;
+      public static final double kForward = 0.2;
+      public static final double kReverse = -0.2;
       public static final double kstop = 0;
     }
     }
@@ -64,7 +64,7 @@ public final class constants {
 
   public static final class LEDConfig {
     public static final int LED_Port = 9;
-    public static final int LED_Length = 32;  
+    public static final int LED_Length = 67;  
     
   }
 

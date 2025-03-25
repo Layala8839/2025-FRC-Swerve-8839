@@ -8,10 +8,11 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants;
 
 /** Control REV Robotics Blinkin LED controller */
-public class BlinkinLEDController {
+public class LEDSubsystem extends SubsystemBase{
   public enum BlinkinPattern {
 
     /*Fixed Palette Pattern*/
@@ -135,7 +136,7 @@ public class BlinkinLEDController {
     }
   };
 
-  private static BlinkinLEDController m_controller = null;
+  private static LEDSubsystem m_controller = null;
   private static Spark m_blinkin;
   private static BlinkinPattern m_currentPattern;
   private static HashMap<Alliance, BlinkinPattern[]> m_allianceColors = new HashMap<Alliance, BlinkinPattern[]>();
@@ -154,7 +155,7 @@ public class BlinkinLEDController {
     BlinkinPattern.STROBE_BLUE
   };
 
-  private BlinkinLEDController() {
+  private LEDSubsystem() {
     m_blinkin = new Spark(constants.BLINKIN_LED_CONTROLLER_PORT);
 
     m_allianceColors.put(Alliance.Red, RED_ALLIANCE_PATTERNS);
@@ -165,8 +166,8 @@ public class BlinkinLEDController {
    * Get instance of BlinkinLEDController
    * @return BlinkinLEDController object
    */
-  public static BlinkinLEDController getInstance() {
-    if (m_controller == null) m_controller = new BlinkinLEDController();
+  public static LEDSubsystem getInstance() {
+    if (m_controller == null) m_controller = new LEDSubsystem();
     return m_controller;
   }
 

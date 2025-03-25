@@ -23,7 +23,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.SuperStructure;
 import frc.robot.subsystems.SuperStructure.Setpoint;
-import frc.robot.subsystems.Other.Sensor.CANRange;
+//import frc.robot.subsystems.Other.Sensor.CANRange;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -39,7 +39,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     //Controller Name
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController joystick1 = new CommandXboxController(0);
     private final CommandXboxController joystick2 = new CommandXboxController(1);
 
     //Subsystem commands {setpoints}
@@ -121,15 +121,15 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed/3) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed/3) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate/3) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-joystick1.getLeftY() * MaxSpeed/3) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick1.getLeftX() * MaxSpeed/3) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick1.getRightX() * MaxAngularRate/3) // Drive counterclockwise with negative X (left)
             )
         );
 
-        joystick.start().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.povDown().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+        joystick1.start().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick1.povDown().whileTrue(drivetrain.applyRequest(() ->
+            point.withModuleDirection(new Rotation2d(-joystick1.getLeftY(), -joystick1.getLeftX()))));
               
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -139,80 +139,70 @@ public class RobotContainer {
                 .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse)); */
 
 /**reset the field-centric heading on left bumper press**/
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick1.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
 /*****************************************TELEOP CONTROLS*********************************************************************/
 
-/******************************************Coral Intake***********************************************************************/
-
-        //Joystick Left Trigger Runs Intake Method
-        /*      joystick.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand().until(() -> CANRange.getIsDetected))
-                .whileFalse(m_superstructure.runIntakeCommand());//.whileTruerunIntakeCommand
-                joystick.leftTrigger().whileTrue(m_superstructure.setSetpointCommand(Setpoint.KIntake))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));              
-        */
+/******************************************Coral Commands***********************************************************************/
 
         /*I think this would worth for detecting the coral*/
-        joystick2.a().onTrue(m_superstructure.reverseIntakeCommand().until(() -> CANRange.getIsDetected));
-        joystick2.a().onTrue(m_superstructure.setSetpointCommand(Setpoint.KIntake));
+        joystick1.rightBumper().onTrue(m_superstructure.reverseIntakeCommand());
+        //.onFalse(m_superstructure.stopIntakeCommand());
+        joystick1.rightBumper().onTrue(m_superstructure.setSetpointCommand(Setpoint.KIntake))
+                .onFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
 
-        joystick2.a().onFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
-
-/*****************************************Elevator Button Bindings (Whole Pressed)******************************************/
+/****************************************************************************************************************/
 
                 //Joystick "A" Runs elevator and arm to Level 1
-        joystick.a().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel1))
+        joystick1.a().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel1))
                 .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
                 //Joystick "B" Runs elevator and arm to Level 2
-        joystick.b().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel2))
+        joystick1.b().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel2))
                 .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
 
                 //Joystick "X" Runs elevator and arm to Level 3
-        joystick.x().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel3))
+        joystick1.x().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel3))
                 .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
 
                 //Joystick "Y" Runs elevator and arm to Level 4
-        joystick.y().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel4))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));  
-
-/*****************************************Elevator Button Bindings (Toggle)************************************************/
-/* <-Remove me to enable
-
-                //Joystick "A" Runs elevator and arm to Level 1
-        joystick.a().toggleOnFalse(m_superstructure.setSetpointCommand(Setpoint.kLevel1))
-                .toggleOnTrue(m_superstructure.setSetpointCommand(Setpoint.kStow));
-                //Joystick "B" Runs elevator and arm to Level 2
-        joystick.b().toggleOnFalse(m_superstructure.setSetpointCommand(Setpoint.kLevel2))
-                .toggleOnTrue(m_superstructure.setSetpointCommand(Setpoint.kStow));
-
-                //Joystick "X" Runs elevator and arm to Level 3
-        joystick.x().toggleOnFalse(m_superstructure.setSetpointCommand(Setpoint.kLevel3))
-                .toggleOnTrue(m_superstructure.setSetpointCommand(Setpoint.kStow));
-
-                //Joystick "Y" Runs elevator and arm to Level 4
-        joystick.y().toggleOnFalse(m_superstructure.setSetpointCommand(Setpoint.kLevel4))
-                .toggleOnTrue(m_superstructure.setSetpointCommand(Setpoint.kStow));
-*/// <-Remove me to enable      
-/*********************************************Score System******************************************************************/
-
-                //Joystick "RightTrigger" Runs Intake Command
-        joystick2.rightTrigger().whileTrue(m_superstructure.reverseIntakeCommand())
-                .whileFalse(m_superstructure.runIntakeCommand());
-        joystick2.rightTrigger().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Kscore))
+        /*joystick1.y().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel4))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));*/
+        
+        joystick1.y().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kLevel4test))
                 .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
-//
 
-/********************************************Algea ball intake***************************************************************/
-
-                //Joystock Right Bumer on controller 2 moves arm to Ball Ground Intake
-      /*  joystick2.rightBumper().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Kballgroundintake))
+                //Score commands while holding the level of hight button
+        joystick1.rightTrigger().whileTrue(m_superstructure.reverseIntakeCommand())
+                .whileFalse(m_superstructure.IntakecoralCommand());
+        joystick1.rightTrigger().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Kscore))
                 .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
-*/
-/********************************************Ball Reef pick up****************************************************************/
+        joystick1.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand())
+                .whileFalse(m_superstructure.IntakecoralCommand());
+        joystick1.leftBumper().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Kscore))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
+
+/********************************************Algae****************************************************************/
+
+        joystick2.x().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Kalgaegroundintake))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.Kballtravel));
+        
+        joystick2.a().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kalgaeLevel1))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.Kballtravel));
+
+        joystick2.b().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kalgaeLevel2))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.Kballtravel));
+
+        joystick2.y().whileTrue(m_superstructure.setSetpointCommand(Setpoint.kalgaescore))
+                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.kStow));
+        
+        joystick2.rightTrigger().whileTrue(m_superstructure.intakeballCommand())
+                .whileFalse(m_superstructure.holdIntakeCommand());
+
+        joystick2.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand())
+                .whileFalse(m_superstructure.stopIntakeCommand());
     }
-
 
         //public Command getAutonomousCommand() {
                 /* Run the path selected from the auto chooser */

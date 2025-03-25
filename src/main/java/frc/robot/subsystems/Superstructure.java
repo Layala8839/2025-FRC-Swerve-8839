@@ -20,26 +20,28 @@ import frc.robot.Configs;
 import frc.robot.constants.SubsystemConstants.ArmSetpoints;
 import frc.robot.constants.SubsystemConstants.ElevatorSetpoints;
 import frc.robot.constants.SubsystemConstants.IntakeSetpoints;
+//import frc.robot.subsystems.Other.Sensor.CANRange;
 
 
 public class SuperStructure extends SubsystemBase {
-  
-  /** CoralSubsystem setpoints **/
+  /** CoralSubsystem setpoints */
   public enum Setpoint {
-    kStow, // Resting Position for Arm
-    kLevel1, //Level 1 setpoint for elevator
-    kLevel2, //Level 2 setpoint for elevator
-    kLevel3, //Level 3 setpoint for elevator
-    kLevel4, //Level 4 setpoint for elevator
-    KIntake, //Arm intake position
-    Kscore,  //Arm Score position
-    Kalgaeintake, //Algae intake position
-    Kalgaegroundintake, //Algae arm ground intake
+    kStow,
+    kLevel1,
+    kLevel2,
+    kLevel3,
+    kLevel4,
+    kLevel4test,
+    KIntake,
+    Kscore,
+    Kalgaeintake,
+    Kalgaegroundintake,
     kalgaeLevel1,
-    kalgaeLevel2, 
-    kalgaebarge, 
-    kalgaescore, 
-    test, 
+    kalgaeLevel2,
+    kalgaebarge,
+    kalgaescore,
+    Kballtravel,
+    test,
     testing,
   }
 
@@ -105,8 +107,7 @@ public class SuperStructure extends SubsystemBase {
    */
   private void moveToSetpoint() {
     armController.setReference(armCurrentTarget, ControlType.kMAXMotionPositionControl);
-    elevatorClosedLoopController.setReference(
-        elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+    elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
   }
 
   /** Zero the elevator encoder when the limit switch is pressed. */
@@ -147,96 +148,121 @@ public class SuperStructure extends SubsystemBase {
     return this.runOnce(
         () -> {
           switch (setpoint) {
+                //Elevator and arm to resting position
             case kStow:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
 
+                //Elevator to coral level 1
             case kLevel1:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
               break;
 
+                //Elevator to coral level 2
             case kLevel2:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel2;
               break;
 
+                //Elevator to coral level 3
             case kLevel3:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
               break;
 
+                //Elevator to coral level 4
             case kLevel4:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
               break;
 
-              //Intake from the feeder station
+                //Elevator to coral level 4
+            case kLevel4test:
+              armCurrentTarget = ArmSetpoints.kStowPosition;
+              elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
+              break;
+
+                //Intake from the feeder station
             case KIntake:
               armCurrentTarget = ArmSetpoints.KFeederIntake;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
-              //Soring*
 
+                //Soring Coral
             case Kscore:
               armCurrentTarget = ArmSetpoints.Kscore;
               break;
-              //IDK
 
-            case kalgaescore:
-                reverseIntakeCommand();
-              break;
+                //Algae setpoints
 
-              //Ball Commands
+                //algae arm to ground intake
             case Kalgaegroundintake:
               armCurrentTarget = ArmSetpoints.kballgroundintake;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
-              runIntakeCommand();
               break;
 
+                //Elevator to algae level 1
             case kalgaeLevel1:
-              armCurrentTarget = ArmSetpoints.kballreef;
+              armCurrentTarget = ArmSetpoints.kballLevel1;
               elevatorCurrentTarget = ElevatorSetpoints.kballLevel1;
               break;
 
+                //Elevator to algae level 2
             case kalgaeLevel2:
-              armCurrentTarget = ArmSetpoints.kballreef;
+              armCurrentTarget = ArmSetpoints.kballLevel2;
               elevatorCurrentTarget = ElevatorSetpoints.kballLevel2;
               break;
 
+                //Elevator to algea level barge
             case kalgaebarge:
              armCurrentTarget = ArmSetpoints.kballbarge;
              elevatorCurrentTarget = ElevatorSetpoints.kballLevelbarge;
-            break;
+              break;
 
-            case testing:
-              armCurrentTarget = ArmSetpoints.kLevel3;
-              elevatorCurrentTarget = ElevatorSetpoints.kballLevel2;
+                //Arm to algae ball travel
+            case Kballtravel:
+              armCurrentTarget = ArmSetpoints.Kballtravel;
+              elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
 
             default:
               break;
           }
-        }
-      );
+        });
   }
   /**
-   * Command to run the intake motor. When the command is interrupted, When the CANRange detects game peice,
-   * the motor will stop.
+   * Intake commands
    */
-  public Command runIntakeCommand() {
+  public Command intakeballCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(-0.3));
+        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(-0.15));
   }
 
-  /**
-   * Command to reverses the intake motor. When the command is interrupted, e.g. the button is
-   * released, the motor will stop.
-   */
+  public Command holdIntakeCommand() {
+    return this.startEnd(
+        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(-0.03));
+  }
+
+  public Command ballshooterCommand() {
+    return this.startEnd(
+        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.8));
+  }
+
+  public Command IntakecoralCommand() {
+    return this.startEnd(
+        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.2));
+  }
+
   public Command reverseIntakeCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.3));
+        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.15));
+  }
+
+  public Command stopIntakeCommand() {
+    return this.startEnd(
+      () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0));
   }
 
   @Override
