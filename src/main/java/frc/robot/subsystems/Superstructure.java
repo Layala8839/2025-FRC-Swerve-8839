@@ -26,23 +26,20 @@ import frc.robot.constants.SubsystemConstants.IntakeSetpoints;
 public class SuperStructure extends SubsystemBase {
   /** CoralSubsystem setpoints */
   public enum Setpoint {
-    kStow,
-    kLevel1,
-    kLevel2,
-    kLevel3,
-    kLevel4,
-    kLevel4test,
-    KIntake,
-    Kscore,
-    Kalgaeintake,
-    Kalgaegroundintake,
-    kalgaeLevel1,
-    kalgaeLevel2,
-    kalgaebarge,
-    kalgaescore,
-    Kballtravel,
-    test,
-    testing,
+    CStow,
+    CLevel1,
+    CLevel2,
+    CLevel3,
+    CLevel4,
+    CLevel4test,
+    CIntake,
+    Cscore,
+    Malgaescore,
+    Malgaetravel,
+    Malgaebarge,
+    MalgaeLevel2,
+    Malgaegroundintake,
+    MalgaeLevel1,
   }
 
   // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to
@@ -149,81 +146,86 @@ public class SuperStructure extends SubsystemBase {
         () -> {
           switch (setpoint) {
                 //Elevator and arm to resting position
-            case kStow:
+            case CStow:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
 
                 //Elevator to coral level 1
-            case kLevel1:
+            case CLevel1:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel1;
               break;
 
                 //Elevator to coral level 2
-            case kLevel2:
+            case CLevel2:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel2;
               break;
 
                 //Elevator to coral level 3
-            case kLevel3:
+            case CLevel3:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel3;
               break;
 
                 //Elevator to coral level 4
-            case kLevel4:
+            case CLevel4:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
               break;
 
                 //Elevator to coral level 4
-            case kLevel4test:
+            case CLevel4test:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
               break;
 
                 //Intake from the feeder station
-            case KIntake:
+            case CIntake:
               armCurrentTarget = ArmSetpoints.KFeederIntake;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
 
                 //Soring Coral
-            case Kscore:
+            case Cscore:
               armCurrentTarget = ArmSetpoints.Kscore;
               break;
 
                 //Algae setpoints
 
                 //algae arm to ground intake
-            case Kalgaegroundintake:
+            case Malgaegroundintake:
               armCurrentTarget = ArmSetpoints.kballgroundintake;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
 
                 //Elevator to algae level 1
-            case kalgaeLevel1:
+            case MalgaeLevel1:
               armCurrentTarget = ArmSetpoints.kballLevel1;
               elevatorCurrentTarget = ElevatorSetpoints.kballLevel1;
               break;
 
                 //Elevator to algae level 2
-            case kalgaeLevel2:
+            case MalgaeLevel2:
               armCurrentTarget = ArmSetpoints.kballLevel2;
               elevatorCurrentTarget = ElevatorSetpoints.kballLevel2;
               break;
 
                 //Elevator to algea level barge
-            case kalgaebarge:
+            case Malgaebarge:
              armCurrentTarget = ArmSetpoints.kballbarge;
              elevatorCurrentTarget = ElevatorSetpoints.kballLevelbarge;
               break;
 
                 //Arm to algae ball travel
-            case Kballtravel:
+            case Malgaetravel:
               armCurrentTarget = ArmSetpoints.Kballtravel;
+              elevatorCurrentTarget = ElevatorSetpoints.kResting;
+              break;
+
+            case Malgaescore:
+              armCurrentTarget = ArmSetpoints.kballgroundintake;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
               break;
 
@@ -237,12 +239,12 @@ public class SuperStructure extends SubsystemBase {
    */
   public Command intakeballCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(-0.15));
+        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(-0.1));
   }
 
   public Command holdIntakeCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(-0.03));
+        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(-0.03));
   }
 
   public Command ballshooterCommand() {
@@ -252,12 +254,12 @@ public class SuperStructure extends SubsystemBase {
 
   public Command IntakecoralCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.2));
+        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.2));
   }
 
   public Command reverseIntakeCommand() {
     return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.15));
+        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.15));
   }
 
   public Command stopIntakeCommand() {
