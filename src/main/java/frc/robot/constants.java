@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Distance;
+
 /*
   The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -18,6 +23,7 @@ public final class constants {
     public static final int kElevatorMotorCanId = 21;
     public static final int kArmMotorCanId = 16;
     public static final int kIntakeMotorCanId = 19;
+    public static final int KCoralSensor = 14;
     
 //Done do more then -58
     public static final class ElevatorSetpoints {
@@ -64,10 +70,20 @@ public final class constants {
 
   public static final class LEDConfig {
     public static final int LED_Port = 9;
-    public static final int LED_Length = 67;  
+    public static final int LED_Length = 67;
     
   }
 
+  public static final class coralsensor {
+    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
+
+    public static SparkMaxConfig getConfigurator() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'getConfigurator'");
+    }
+  
+    
+  }
   public static final int BLINKIN_LED_CONTROLLER_PORT = 9;
 
 }

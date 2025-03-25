@@ -20,10 +20,10 @@ import frc.robot.Configs;
 import frc.robot.constants.SubsystemConstants.ArmSetpoints;
 import frc.robot.constants.SubsystemConstants.ElevatorSetpoints;
 import frc.robot.constants.SubsystemConstants.IntakeSetpoints;
-//import frc.robot.subsystems.Other.Sensor.CANRange;
 
 
 public class SuperStructure extends SubsystemBase {
+
   /** CoralSubsystem setpoints */
   public enum Setpoint {
     CStow,
@@ -68,6 +68,8 @@ public class SuperStructure extends SubsystemBase {
   private double armCurrentTarget = ArmSetpoints.kStowPosition;
   private double elevatorCurrentTarget = ElevatorSetpoints.kResting;
 
+
+
   public SuperStructure() {
     /*
      * Apply the appropriate configurations to the SPARKs.
@@ -91,7 +93,7 @@ public class SuperStructure extends SubsystemBase {
         Configs.Subsystem_Motors.intakeConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-
+    
     // Zero arm and elevator encoders on initialization
     armEncoder.setPosition(0);
     elevatorEncoder.setPosition(0);
@@ -237,6 +239,9 @@ public class SuperStructure extends SubsystemBase {
   /**
    * Intake commands
    */
+
+
+
   public Command intakeballCommand() {
     return this.startEnd(
         () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(-0.1));
