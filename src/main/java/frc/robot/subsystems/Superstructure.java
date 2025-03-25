@@ -59,7 +59,7 @@ public class SuperStructure extends SubsystemBase {
 
   // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
   // controller like above.
-  private SparkMax intakeMotor =
+  public SparkMax intakeMotor =
       new SparkMax(frc.robot.constants.SubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
 
   // Member variables for subsystem state management

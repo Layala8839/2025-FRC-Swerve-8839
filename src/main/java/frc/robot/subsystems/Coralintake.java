@@ -7,30 +7,38 @@ package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.hardware.CANrange;
-import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.core.CoreCANrange;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants;
 
-@Logged
+
 public class Coralintake extends SubsystemBase {
-  TalonFX outtakeMotor;
-  CANrange coralSensor;
+  
   private boolean hasCoral, indexingCoral;
+
+  public CoreCANrange coralSensor;
+  public SparkBase intakeMotor;
 
   /** Creates a new CoralOuttake. 
      * @return */
     public void CoralIntake() {
-    coralSensor = new CANrange(constants.SubsystemConstants.KCoralSensor);
+    try (CANrange coralSensor = new CANrange(constants.SubsystemConstants.KCoralSensor)) {
+  
+      hasCoral = false;
 
-    hasCoral = false;
+      coralSensor.getConfigurator().apply(frc.robot.Configs.Subsystem_Motors.sensorconfig);
+    }
+    try (SparkMax intakemotor = new SparkMax(constants.SubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless)) {
+    }
 
-    coralSensor.getConfigurator().apply(frc.robot.Configs.Subsystem_Motors.sensorconfig);
   }
 
-  public void setCoralOuttake(double speed) {
-    outtakeMotor.set(speed);
+  public void setCoralintake(double speed) {
+    intakeMotor.set(0.1);
   }
 
   public void setIndexingCoral(boolean indexing) {
