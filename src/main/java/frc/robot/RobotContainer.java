@@ -21,6 +21,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IntakeSub;
 import frc.robot.subsystems.SuperStructure;
 import frc.robot.subsystems.SuperStructure.Asetpoint;
 import frc.robot.subsystems.SuperStructure.Csetpoint;
@@ -44,8 +45,7 @@ public class RobotContainer {
 
     //Subsystem commands {setpoints}
     private final SuperStructure m_superstructure = new SuperStructure();
-    //private final AlgaeSubsystem m_superstructure = new AlgaeSubsystem();
-
+    private final IntakeSub m_intake = new IntakeSub();
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -149,8 +149,10 @@ public class RobotContainer {
 /******************************************Coral Commands***********************************************************************/
 
                 //I think this would worth for detecting the coral
-        joystick1.rightBumper().onTrue(m_superstructure.IntakecoralCommand());
-        joystick1.rightBumper().onFalse(m_superstructure.stopIntakeCommand());
+        joystick1.rightTrigger().whileTrue(m_intake.runIntakeUntilDetected());
+
+        joystick1.rightBumper().onTrue(m_intake.runIntakeUntilDetected());
+        joystick1.rightBumper().onFalse(m_intake.stopIntakeCommand());
         joystick1.rightBumper().onTrue(m_superstructure.setSetpointCommand(Csetpoint.CIntake));
         joystick1.rightBumper().onFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
@@ -171,13 +173,17 @@ public class RobotContainer {
         joystick1.y().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
                 //Score commands while holding the level of hight button
-        joystick1.rightTrigger().whileTrue(m_superstructure.reverseIntakeCommand());
-        joystick1.rightTrigger().whileFalse(m_superstructure.IntakecoralCommand());
+
+        joystick1.rightTrigger().whileTrue(m_intake.reverseIntakeCommand());
         joystick1.rightTrigger().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.Cscore));
+
+        joystick1.rightTrigger().whileFalse(m_intake.IntakecoralCommand());
         joystick1.leftTrigger().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
-        joystick1.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand());
-        joystick1.leftTrigger().whileFalse(m_superstructure.IntakecoralCommand());
+        
+        joystick1.leftTrigger().whileTrue(m_intake.reverseIntakeCommand());
         joystick1.leftBumper().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.Cscore));
+
+        joystick1.leftTrigger().whileFalse(m_intake.IntakecoralCommand());
         joystick1.leftBumper().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
 
@@ -202,12 +208,12 @@ public class RobotContainer {
         joystick2.y().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
         
                 //Algae intake command
-        joystick2.rightTrigger().whileTrue(m_superstructure.intakeballCommand());
-        joystick2.rightTrigger().whileFalse(m_superstructure.holdIntakeCommand());
+        joystick2.rightTrigger().whileTrue(m_intake.intakeballCommand());
+        joystick2.rightTrigger().whileFalse(m_intake.holdIntakeCommand());
 
                 //Algae Score Command
-        joystick2.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand());
-        joystick2.leftTrigger().whileFalse(m_superstructure.stopIntakeCommand());
+        joystick2.leftTrigger().whileTrue(m_intake.reverseIntakeCommand());
+        joystick2.leftTrigger().whileFalse(m_intake.stopIntakeCommand());
     }
 
         //public Command getAutonomousCommand() {

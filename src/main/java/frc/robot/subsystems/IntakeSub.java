@@ -19,7 +19,8 @@ public class IntakeSub extends SubsystemBase{
     // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
     // controller like above.
     public SparkMax intakeMotor =
-        new SparkMax(frc.robot.constants.SubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
+        new SparkMax(frc.robot.constants.SubsystemConstants.
+        kIntakeMotorCanId, MotorType.kBrushless);
 
     public IntakeSub() {
     //Apply the appropriate configurations to the SPARKs.
@@ -84,19 +85,14 @@ public class IntakeSub extends SubsystemBase{
     return this.startEnd(
       () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0));
     }
+    
 
-    public Command runIntakeUntilDetected() {
-        return this.startEnd(
-            () -> this.setIntakePower(IntakeSetpoints.kForward),
-            () -> this.setIntakePower(0)
-        ).until(() -> getIsDetected(true).getValue());
-    }
 
   @Override
   public void periodic() {
     // Display subsystem values
     SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
-
+    SmartDashboard.putBoolean("CANRange Detected", getIsDetected(true).getValue());
     SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
 
     // Check if the CANRange sensor detects a game piece
@@ -107,5 +103,12 @@ public class IntakeSub extends SubsystemBase{
     } else {
         SmartDashboard.putBoolean("GamePieceDetected", false);
     }
+    }
+
+    public Command runIntakeUntilDetected() {
+        return this.startEnd(
+            () -> this.setIntakePower(IntakeSetpoints.kForward),
+            () -> this.setIntakePower(0.2)
+        ).until(() -> getIsDetected(true).getValue());
     }
 }

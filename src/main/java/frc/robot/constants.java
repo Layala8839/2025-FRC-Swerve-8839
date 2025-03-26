@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Distance;
 
@@ -76,12 +74,6 @@ public final class constants {
 
   public static final class coralsensor {
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
-
-    public static SparkMaxConfig getConfigurator() {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getConfigurator'");
-    }
-  
     
   }
   public static final int BLINKIN_LED_CONTROLLER_PORT = 9;
