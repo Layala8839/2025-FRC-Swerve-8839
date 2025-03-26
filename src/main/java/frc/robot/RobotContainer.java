@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.SuperStructure;
-import frc.robot.subsystems.SuperStructure.Setpoint;
-//import frc.robot.subsystems.Other.Sensor.CANRange;
+import frc.robot.subsystems.SuperStructure.Asetpoint;
+import frc.robot.subsystems.SuperStructure.Csetpoint;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -139,8 +139,8 @@ public class RobotContainer {
                 .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse)); */
 
 /**reset the field-centric heading on left bumper press**/
+        
         joystick1.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
         drivetrain.registerTelemetry(logger::telemeterize);
 
 
@@ -150,36 +150,35 @@ public class RobotContainer {
 
                 //I think this would worth for detecting the coral
         joystick1.rightBumper().onTrue(m_superstructure.IntakecoralCommand());
-        
-                //.onFalse(m_superstructure.stopIntakeCommand());
-        joystick1.rightBumper().onTrue(m_superstructure.setSetpointCommand(Setpoint.CIntake))
-                .onFalse(m_superstructure.setSetpointCommand(Setpoint.CStow));
+        joystick1.rightBumper().onFalse(m_superstructure.stopIntakeCommand());
+        joystick1.rightBumper().onTrue(m_superstructure.setSetpointCommand(Csetpoint.CIntake));
+        joystick1.rightBumper().onFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
                 //Joystick "A" Runs elevator and arm to Level 1
-        joystick1.a().whileTrue(m_superstructure.setSetpointCommand(Setpoint.CLevel1))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.CStow));
+        joystick1.a().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.CLevel1));
+        joystick1.a().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
                 //Joystick "B" Runs elevator and arm to Level 2
-        joystick1.b().whileTrue(m_superstructure.setSetpointCommand(Setpoint.CLevel2))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.CStow));
+        joystick1.b().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.CLevel2));
+        joystick1.b().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
                 //Joystick "X" Runs elevator and arm to Level 3
-        joystick1.x().whileTrue(m_superstructure.setSetpointCommand(Setpoint.CLevel3))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.CStow));
+        joystick1.x().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.CLevel3));
+        joystick1.x().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
                 //Joystick "Y" Runs elevator and arm to Level 4
-        joystick1.y().whileTrue(m_superstructure.setSetpointCommand(Setpoint.CLevel4test))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.CStow));
+        joystick1.y().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.CLevel4test));
+        joystick1.y().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
                 //Score commands while holding the level of hight button
-        joystick1.rightTrigger().whileTrue(m_superstructure.reverseIntakeCommand())
-                .whileFalse(m_superstructure.IntakecoralCommand());
-        joystick1.rightTrigger().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Cscore))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.CStow));
-        joystick1.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand())
-                .whileFalse(m_superstructure.IntakecoralCommand());
-        joystick1.leftBumper().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Cscore))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.CStow));
+        joystick1.rightTrigger().whileTrue(m_superstructure.reverseIntakeCommand());
+        joystick1.rightTrigger().whileFalse(m_superstructure.IntakecoralCommand());
+        joystick1.rightTrigger().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.Cscore));
+        joystick1.leftTrigger().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
+        joystick1.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand());
+        joystick1.leftTrigger().whileFalse(m_superstructure.IntakecoralCommand());
+        joystick1.leftBumper().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.Cscore));
+        joystick1.leftBumper().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
 
 /******************************************** Controller 2 ****************************************************************/
@@ -187,28 +186,28 @@ public class RobotContainer {
 /************************************************Algae****************************************************************/
 
                 //Algae ground intake
-        joystick2.x().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Malgaegroundintake))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.Malgaetravel));
+        joystick2.x().whileTrue(m_superstructure.setSetpointCommand(Asetpoint.Malgaegroundintake));
+        joystick2.x().whileFalse(m_superstructure.setSetpointCommand(Asetpoint.Malgaetravel));
 
                 //algae reef level 1 position
-        joystick2.a().whileTrue(m_superstructure.setSetpointCommand(Setpoint.MalgaeLevel1))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.Malgaetravel));
+        joystick2.a().whileTrue(m_superstructure.setSetpointCommand(Asetpoint.MalgaeLevel1));
+        joystick2.a().whileFalse(m_superstructure.setSetpointCommand(Asetpoint.Malgaetravel));
 
                 //Algae reef level 2 position
-        joystick2.b().whileTrue(m_superstructure.setSetpointCommand(Setpoint.MalgaeLevel2))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.Malgaetravel));
+        joystick2.b().whileTrue(m_superstructure.setSetpointCommand(Asetpoint.MalgaeLevel2));
+        joystick2.b().whileFalse(m_superstructure.setSetpointCommand(Asetpoint.Malgaetravel));
 
                 //Algae Scor position
-        joystick2.y().whileTrue(m_superstructure.setSetpointCommand(Setpoint.Malgaescore))
-                .whileFalse(m_superstructure.setSetpointCommand(Setpoint.CStow));
+        joystick2.y().whileTrue(m_superstructure.setSetpointCommand(Asetpoint.Malgaescore));
+        joystick2.y().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
         
                 //Algae intake command
-        joystick2.rightTrigger().whileTrue(m_superstructure.intakeballCommand())
-                .whileFalse(m_superstructure.holdIntakeCommand());
+        joystick2.rightTrigger().whileTrue(m_superstructure.intakeballCommand());
+        joystick2.rightTrigger().whileFalse(m_superstructure.holdIntakeCommand());
 
                 //Algae Score Command
-        joystick2.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand())
-                .whileFalse(m_superstructure.stopIntakeCommand());
+        joystick2.leftTrigger().whileTrue(m_superstructure.reverseIntakeCommand());
+        joystick2.leftTrigger().whileFalse(m_superstructure.stopIntakeCommand());
     }
 
         //public Command getAutonomousCommand() {

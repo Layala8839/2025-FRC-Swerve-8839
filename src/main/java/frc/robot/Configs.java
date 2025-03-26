@@ -3,8 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
-import com.ctre.phoenix6.configs.CANrangeConfiguration;
-import com.ctre.phoenix6.signals.UpdateModeValue;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -15,7 +13,6 @@ public final class Configs {
     public static final SparkMaxConfig armConfig = new SparkMaxConfig();
     public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
     public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
-    public static final CANrangeConfiguration sensorconfig = new CANrangeConfiguration();
 
     static {
       // Configure basic settings of the arm motor
@@ -65,10 +62,6 @@ public final class Configs {
           .maxVelocity(4200)
           .maxAcceleration(6000)
           .allowedClosedLoopError(0.5);
-
-        sensorconfig
-          .ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
-
 
       // Configure basic settings of the intake motor
       intakeConfig.inverted(true).idleMode(IdleMode.kBrake).smartCurrentLimit(40);

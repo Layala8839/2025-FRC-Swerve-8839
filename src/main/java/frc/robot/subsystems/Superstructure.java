@@ -19,13 +19,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.constants.SubsystemConstants.ArmSetpoints;
 import frc.robot.constants.SubsystemConstants.ElevatorSetpoints;
-import frc.robot.constants.SubsystemConstants.IntakeSetpoints;
 
 
 public class SuperStructure extends SubsystemBase {
 
   /** CoralSubsystem setpoints */
-  public enum Setpoint {
+  public enum Csetpoint {
     CStow,
     CLevel1,
     CLevel2,
@@ -34,12 +33,16 @@ public class SuperStructure extends SubsystemBase {
     CLevel4test,
     CIntake,
     Cscore,
+  }
+
+  public enum Asetpoint {
+    Malgaegroundintake, 
+    MalgaeLevel1, 
+    MalgaeLevel2, 
+    Malgaebarge, 
+    Malgaetravel, 
     Malgaescore,
-    Malgaetravel,
-    Malgaebarge,
-    MalgaeLevel2,
-    Malgaegroundintake,
-    MalgaeLevel1,
+    
   }
 
   // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to
@@ -56,11 +59,6 @@ public class SuperStructure extends SubsystemBase {
   private SparkClosedLoopController elevatorClosedLoopController =
       elevatorMotor.getClosedLoopController();
   private RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
-
-  // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
-  // controller like above.
-  public SparkMax intakeMotor =
-      new SparkMax(frc.robot.constants.SubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
 
   // Member variables for subsystem state management
   private boolean wasResetByButton = false;
@@ -89,11 +87,6 @@ public class SuperStructure extends SubsystemBase {
         Configs.Subsystem_Motors.elevatorConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
-    intakeMotor.configure(
-        Configs.Subsystem_Motors.intakeConfig,
-        ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
-    
     // Zero arm and elevator encoders on initialization
     armEncoder.setPosition(0);
     elevatorEncoder.setPosition(0);
@@ -135,15 +128,12 @@ public class SuperStructure extends SubsystemBase {
   }
 
   /** Set the intake motor power in the range of [-1, 1]. */
-  private void setIntakePower(double power) {
-    intakeMotor.set(power);
-  }
 
   /**
    * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
    * positions for the given setpoint.
    */
-  public Command setSetpointCommand(Setpoint setpoint) {
+  public Command setSetpointCommand(Csetpoint setpoint) {
     return this.runOnce(
         () -> {
           switch (setpoint) {
@@ -183,94 +173,66 @@ public class SuperStructure extends SubsystemBase {
               elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
               break;
 
-                //Intake from the feeder station
-            case CIntake:
-              armCurrentTarget = ArmSetpoints.KFeederIntake;
-              elevatorCurrentTarget = ElevatorSetpoints.kResting;
-              break;
-
-                //Soring Coral
-            case Cscore:
-              armCurrentTarget = ArmSetpoints.Kscore;
-              break;
-
-                //Algae setpoints
-
-                //algae arm to ground intake
-            case Malgaegroundintake:
-              armCurrentTarget = ArmSetpoints.kballgroundintake;
-              elevatorCurrentTarget = ElevatorSetpoints.kResting;
-              break;
-
-                //Elevator to algae level 1
-            case MalgaeLevel1:
-              armCurrentTarget = ArmSetpoints.kballLevel1;
-              elevatorCurrentTarget = ElevatorSetpoints.kballLevel1;
-              break;
-
-                //Elevator to algae level 2
-            case MalgaeLevel2:
-              armCurrentTarget = ArmSetpoints.kballLevel2;
-              elevatorCurrentTarget = ElevatorSetpoints.kballLevel2;
-              break;
-
-                //Elevator to algea level barge
-            case Malgaebarge:
-             armCurrentTarget = ArmSetpoints.kballbarge;
-             elevatorCurrentTarget = ElevatorSetpoints.kballLevelbarge;
-              break;
-
-                //Arm to algae ball travel
-            case Malgaetravel:
-              armCurrentTarget = ArmSetpoints.Kballtravel;
-              elevatorCurrentTarget = ElevatorSetpoints.kResting;
-              break;
-
-            case Malgaescore:
-              armCurrentTarget = ArmSetpoints.kballgroundintake;
-              elevatorCurrentTarget = ElevatorSetpoints.kResting;
-              break;
-
             default:
               break;
           }
         });
   }
+                //********************************Algae Aetpoints************************************//
+                
+  public Command setSetpointCommand(Asetpoint setpoint) {
+    return this.runOnce(
+        () -> {
+          switch (setpoint) {
+
+
+                //algae arm to ground intake
+                case Malgaegroundintake:
+                armCurrentTarget = ArmSetpoints.kballgroundintake;
+                elevatorCurrentTarget = ElevatorSetpoints.kResting;
+                break;
+  
+                  //Elevator to algae level 1
+              case MalgaeLevel1:
+                armCurrentTarget = ArmSetpoints.kballLevel1;
+                elevatorCurrentTarget = ElevatorSetpoints.kballLevel1;
+                break;
+  
+                  //Elevator to algae level 2
+              case MalgaeLevel2:
+                armCurrentTarget = ArmSetpoints.kballLevel2;
+                elevatorCurrentTarget = ElevatorSetpoints.kballLevel2;
+                break;
+  
+                  //Elevator to algea level barge
+              case Malgaebarge:
+               armCurrentTarget = ArmSetpoints.kballbarge;
+               elevatorCurrentTarget = ElevatorSetpoints.kballLevelbarge;
+                break;
+  
+                  //Arm to algae ball travel
+              case Malgaetravel:
+                armCurrentTarget = ArmSetpoints.Kballtravel;
+                elevatorCurrentTarget = ElevatorSetpoints.kResting;
+                break;
+  
+              case Malgaescore:
+                armCurrentTarget = ArmSetpoints.kballgroundintake;
+                elevatorCurrentTarget = ElevatorSetpoints.kResting;
+                break;
+  
+              default:
+                break;
+            }
+          });
+    }
+
+
+
+
   /**
    * Intake commands
    */
-
-
-
-  public Command intakeballCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(-0.1));
-  }
-
-  public Command holdIntakeCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(-0.03));
-  }
-
-  public Command ballshooterCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.8));
-  }
-
-  public Command IntakecoralCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.2));
-  }
-
-  public Command reverseIntakeCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.15));
-  }
-
-  public Command stopIntakeCommand() {
-    return this.startEnd(
-      () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0));
-  }
 
   @Override
   public void periodic() {
@@ -283,6 +245,6 @@ public class SuperStructure extends SubsystemBase {
     SmartDashboard.putNumber("Coral/Arm/Actual Position", armEncoder.getPosition());
     SmartDashboard.putNumber("Coral/Elevator/Target Position", elevatorCurrentTarget);
     SmartDashboard.putNumber("Coral/Elevator/Actual Position", elevatorEncoder.getPosition());
-    SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
+   // SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
   }
 }
