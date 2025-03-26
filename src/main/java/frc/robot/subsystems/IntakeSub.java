@@ -85,9 +85,27 @@ public class IntakeSub extends SubsystemBase{
       () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0));
     }
 
+    public Command runIntakeUntilDetected() {
+        return this.startEnd(
+            () -> this.setIntakePower(IntakeSetpoints.kForward),
+            () -> this.setIntakePower(0)
+        ).until(() -> getIsDetected(true).getValue());
+    }
+
   @Override
   public void periodic() {
     // Display subsystem values
     SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
+
+    SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
+
+    // Check if the CANRange sensor detects a game piece
+    if (getIsDetected(true).getValue()) {
+        // Stop the intake motor if a game piece is detected
+        setIntakePower(0);
+        SmartDashboard.putBoolean("GamePieceDetected", true);
+    } else {
+        SmartDashboard.putBoolean("GamePieceDetected", false);
+    }
     }
 }
