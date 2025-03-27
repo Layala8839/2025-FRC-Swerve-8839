@@ -150,19 +150,12 @@ public class RobotContainer {
 
 /******************************************Coral Commands***********************************************************************/
 
-                //I think this would worth for detecting the coral
-       // joystick1.rightTrigger().whileTrue(m_intake.runIntakeUntilDetected());
-       // joystick1.rightBumper().onTrue(m_intake.runIntakeUntilDetected());
-       // joystick1.rightBumper().onFalse(m_intakecommands.stopIntakeCommand());
-       // joystick1.rightBumper().onTrue(m_superstructure.setSetpointCommand(Csetpoint.CIntake));
-       // joystick1.rightBumper().onFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
-
                 //Joystick "Right Bumper" Runs elevator and arm to Level 1
-        joystick1.rightBumper().onTrue(m_intakedetected.runIntakeUntilDetected());
-        joystick1.rightBumper().onTrue(m_superstructure.setSetpointCommand(Csetpoint.CIntake));
+        joystick1.leftTrigger().onTrue(m_intakedetected.runIntakeUntilDetected());
+        joystick1.leftTrigger().onTrue(m_superstructure.setSetpointCommand(Csetpoint.CIntake));
 
-        joystick1.rightBumper().onFalse(m_intakecommands.stopIntakeCommand());
-        joystick1.rightBumper().onFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
+        joystick1.leftTrigger().onFalse(m_intakecommands.stopIntakeCommand());
+        joystick1.leftTrigger().onFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
                 //Joystick "A" Runs elevator and arm to Level 1
         joystick1.a().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.CLevel1));
@@ -186,13 +179,7 @@ public class RobotContainer {
         joystick1.rightTrigger().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.Cscore));
 
         joystick1.rightTrigger().whileFalse(m_intakecommands.IntakecoralCommand());
-        joystick1.leftTrigger().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
-        
-        joystick1.leftTrigger().whileTrue(m_intakecommands.reverseIntakeCommand());
-        joystick1.leftBumper().whileTrue(m_superstructure.setSetpointCommand(Csetpoint.Cscore));
-
-        joystick1.leftTrigger().whileFalse(m_intakecommands.IntakecoralCommand());
-        joystick1.leftBumper().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
+        joystick1.rightTrigger().whileFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
 
 /******************************************** Controller 2 ****************************************************************/
