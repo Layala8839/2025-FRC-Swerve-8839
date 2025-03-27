@@ -21,7 +21,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.IntakeSub;
+import frc.robot.subsystems.IntakeDetect;
 import frc.robot.subsystems.IntakeCommands;
 import frc.robot.subsystems.SuperStructure;
 import frc.robot.subsystems.SuperStructure.Asetpoint;
@@ -46,7 +46,7 @@ public class RobotContainer {
 
     //Subsystem commands {setpoints}
     private final SuperStructure m_superstructure = new SuperStructure();
-    private final IntakeSub m_intake = new IntakeSub();
+    private final IntakeDetect m_intakedetected = new IntakeDetect();
     private final IntakeCommands m_intakecommands = new IntakeCommands();
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -123,9 +123,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick1.getLeftY() * MaxSpeed/3) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick1.getLeftX() * MaxSpeed/3) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick1.getRightX() * MaxAngularRate/3) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-joystick1.getLeftY() * MaxSpeed/5) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick1.getLeftX() * MaxSpeed/5) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick1.getRightX() * MaxAngularRate/5) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -158,7 +158,7 @@ public class RobotContainer {
        // joystick1.rightBumper().onFalse(m_superstructure.setSetpointCommand(Csetpoint.CStow));
 
                 //Joystick "Right Bumper" Runs elevator and arm to Level 1
-        joystick1.rightBumper().onTrue(m_intake.runIntakeUntilDetected());
+        joystick1.rightBumper().onTrue(m_intakedetected.runIntakeUntilDetected());
         joystick1.rightBumper().onTrue(m_superstructure.setSetpointCommand(Csetpoint.CIntake));
 
         joystick1.rightBumper().onFalse(m_intakecommands.stopIntakeCommand());

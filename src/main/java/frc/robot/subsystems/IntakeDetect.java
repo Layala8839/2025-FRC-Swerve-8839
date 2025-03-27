@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.constants.SubsystemConstants.IntakeSetpoints;
 
-public class IntakeSub extends SubsystemBase {
+public class IntakeDetect extends SubsystemBase {
     // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
     // controller like above.
     public SparkMax intakeMotor =
         new SparkMax(frc.robot.constants.SubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
 
-    public IntakeSub() {
+    public IntakeDetect() {
         //Apply the appropriate configurations to the SPARKs.
         intakeMotor.configure(
                 Configs.Subsystem_Motors.intakeConfig,
