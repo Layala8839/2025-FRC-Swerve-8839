@@ -72,9 +72,7 @@ public class IntakeDetect extends SubsystemBase {
     public Command runIntakeUntilDetected() {
         return this.startEnd(
             () -> this.setIntakePower(IntakeSetpoints.kForward),
-            () -> this.setIntakePower(0.2)
+            () -> this.setIntakePower(0.8)
         ).until(() -> getIsDetected(true).getValue());
     }
-
-    
 }
