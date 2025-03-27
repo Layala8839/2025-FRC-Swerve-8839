@@ -138,6 +138,12 @@ public class SuperStructure extends SubsystemBase {
         () -> {
           switch (setpoint) {
                 //Elevator and arm to resting position
+            case CIntake:
+              armCurrentTarget = ArmSetpoints.KFeederIntake;
+              elevatorCurrentTarget = ElevatorSetpoints.kResting;
+              break;
+
+                //Elevator and arm to scoring position
             case CStow:
               armCurrentTarget = ArmSetpoints.kStowPosition;
               elevatorCurrentTarget = ElevatorSetpoints.kResting;
@@ -184,8 +190,6 @@ public class SuperStructure extends SubsystemBase {
     return this.runOnce(
         () -> {
           switch (setpoint) {
-
-
                 //algae arm to ground intake
                 case Malgaegroundintake:
                 armCurrentTarget = ArmSetpoints.kballgroundintake;
@@ -227,12 +231,7 @@ public class SuperStructure extends SubsystemBase {
           });
     }
 
-
-
-
-  /**
-   * Intake commands
-   */
+  //Intake commands
 
   @Override
   public void periodic() {
@@ -245,6 +244,5 @@ public class SuperStructure extends SubsystemBase {
     SmartDashboard.putNumber("Coral/Arm/Actual Position", armEncoder.getPosition());
     SmartDashboard.putNumber("Coral/Elevator/Target Position", elevatorCurrentTarget);
     SmartDashboard.putNumber("Coral/Elevator/Actual Position", elevatorEncoder.getPosition());
-   // SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
-  }
+    }
 }

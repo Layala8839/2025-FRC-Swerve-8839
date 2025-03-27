@@ -15,94 +15,58 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.constants.SubsystemConstants.IntakeSetpoints;
 
-public class IntakeSub extends SubsystemBase{
+public class IntakeSub extends SubsystemBase {
     // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop
     // controller like above.
     public SparkMax intakeMotor =
-        new SparkMax(frc.robot.constants.SubsystemConstants.
-        kIntakeMotorCanId, MotorType.kBrushless);
+        new SparkMax(frc.robot.constants.SubsystemConstants.kIntakeMotorCanId, MotorType.kBrushless);
 
     public IntakeSub() {
-    //Apply the appropriate configurations to the SPARKs.
-    intakeMotor.configure(
-            Configs.Subsystem_Motors.intakeConfig,
-            ResetMode.kResetSafeParameters,
-            PersistMode.kPersistParameters);
+        //Apply the appropriate configurations to the SPARKs.
+        intakeMotor.configure(
+                Configs.Subsystem_Motors.intakeConfig,
+                ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
+
     private void setIntakePower(double power) {
-                intakeMotor.set(power);
+        intakeMotor.set(power);
     }
+
     //******************//
     //Coral Cancoder Setup
     public CANrange CANrange = 
         new CANrange(frc.robot.constants.SubsystemConstants.KCoralSensor);
 
-    
     public static final CANrangeConfiguration CANrangeconfig = new CANrangeConfiguration();
 
     static {
-    CANrangeconfig
-        .ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
+        CANrangeconfig.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
     }
 
-    public boolean hasCoral,nocoral;
+    public boolean hasCoral, nocoral;
 
-
-    public StatusSignal <Boolean> getIsDetected(boolean refresh) {
-        return getIsDetected(true);
+    public StatusSignal<Boolean> getIsDetected(boolean refresh) {
+        return CANrange.getIsDetected(refresh);
     }
-    
-    
+
     //*****************//
     //Intake Commands 
 
-    public Command intakeballCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(-0.1));
-    }
+    @Override
+    public void periodic() {
+        // Display subsystem values
+        SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
+        
+        // Check if the CANRange sensor detects a game piece
+        boolean isDetected = getIsDetected(true).getValue();
+        SmartDashboard.putBoolean("CANRange Detected", isDetected);
+        SmartDashboard.putBoolean("GamePieceDetected", isDetected);
 
-    public Command holdIntakeCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(-0.03));
-    }
-
-    public Command ballshooterCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.8));
-    }
-
-    public Command IntakecoralCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.2));
-    }
-
-    public Command reverseIntakeCommand() {
-    return this.startEnd(
-        () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.15));
-    }
-
-    public Command stopIntakeCommand() {
-    return this.startEnd(
-      () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0));
-    }
-    
-
-
-  @Override
-  public void periodic() {
-    // Display subsystem values
-    SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
-    SmartDashboard.putBoolean("CANRange Detected", getIsDetected(true).getValue());
-    SmartDashboard.putNumber("Coral/Intake/Applied Output", intakeMotor.getAppliedOutput());
-
-    // Check if the CANRange sensor detects a game piece
-    if (getIsDetected(true).getValue()) {
-        // Stop the intake motor if a game piece is detected
-        setIntakePower(0);
-        SmartDashboard.putBoolean("GamePieceDetected", true);
-    } else {
-        SmartDashboard.putBoolean("GamePieceDetected", false);
-    }
+        if (isDetected) {
+            // Stop the intake motor if a game piece is detected
+            setIntakePower(0);
+        }
     }
 
     public Command runIntakeUntilDetected() {
@@ -111,4 +75,6 @@ public class IntakeSub extends SubsystemBase{
             () -> this.setIntakePower(0.2)
         ).until(() -> getIsDetected(true).getValue());
     }
+
+    
 }
